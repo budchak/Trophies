@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/riverTrophiesFragment">
+    <fragment
+        android:id="@+id/previewFragment"
+        android:name="com.yaroshevich.trophies.ui.preview.PreviewFragment"
+        android:label="fragment_preview"
+        tools:layout="@layout/fragment_preview" >
+        <action
+            android:id="@+id/action_detail"
+            app:destination="@id/detailFragment" >
+            <argument android:defaultValue="0"
+                android:name="id" />
+        </action>
+        <action
+            android:id="@+id/action_to_empty_screen"
+            app:destination="@id/emptyDetailFragment" />
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.yaroshevich.trophies.ui.detail.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/emptyDetailFragment"
+        android:name="com.yaroshevich.trophies.ui.emptyDetail.EmptyDetailFragment"
+        android:label="fragment_empty"
+        tools:layout="@layout/fragment_empty" >
+        <action
+            android:id="@+id/action_to_fish_info"
+            app:destination="@id/trophyInfoFragment" />
+        <action
+            android:id="@+id/action_add_new_trophy"
+            app:destination="@+id/newTrophyFragment" />
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/trophyInfoFragment"
+        android:name="com.yaroshevich.trophies.ui.trophyInfo.TrophyInfoFragment"
+        android:label="fragment_fish_info"
+        tools:layout="@layout/fragment_fish_info" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/newTrophyFragment"
+        android:name="com.yaroshevich.trophies.ui.newTrophy.NewTrophyFragment"
+        android:label="fragment_new_trophy"
+        tools:layout="@layout/fragment_new_trophy" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_newTrophyFragment_to_weightDialogFragment"
+            app:destination="@id/weightDialogFragment" />
+        <action
+            android:id="@+id/action_newTrophyFragment_to_placeDialogFragment"
+            app:destination="@id/placeDialogFragment" />
+        <action
+            android:id="@+id/action_newTrophyFragment_to_dateDialogFragment2"
+            app:destination="@id/dateDialogFragment" />
+        <action
+            android:id="@+id/action_newTrophyFragment_to_previewFragment"
+            app:destination="@id/previewFragment"
+            app:popUpTo="@+id/riverTrophiesFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/weightDialogFragment"
+        android:name="com.yaroshevich.trophies.ui.newTrophy.dialog.WeightDialogFragment"
+        android:label="dialog_add_weight"
+        tools:layout="@layout/dialog_add_weight" />
+    <dialog
+        android:id="@+id/placeDialogFragment"
+        android:name="com.yaroshevich.trophies.ui.newTrophy.dialog.PlaceDialogFragment"
+        android:label="dialog_add_places"
+        tools:layout="@layout/dialog_add_places" />
+    <dialog
+        android:id="@+id/dateDialogFragment"
+        android:name="com.yaroshevich.trophies.ui.newTrophy.dialog.DateDialogFragment"
+        android:label="dialog_add_date"
+        tools:layout="@layout/dialog_add_date" />
+    <fragment
+        android:id="@+id/riverListFragment"
+        android:name="com.yaroshevich.trophies.ui.riverList.RiverListFragment"
+        android:label="RiverListFragment" />
+    <fragment
+        android:id="@+id/placeFragment"
+        android:name="com.yaroshevich.trophies.ui.place.PlaceFragment"
+        android:label="PlaceFragment" />
+    <fragment
+        android:id="@+id/riverTrophiesFragment"
+        android:name="com.yaroshevich.trophies.ui.riverTrophiew.RiverTrophiesFragment"
+        android:label="RiverTrophiesFragment" >
+        <action
+            android:id="@+id/action_trophy"
+            app:destination="@id/previewFragment">
+            <argument
+                android:name="id"
+                android:defaultValue="0" />
+        </action>
+    </fragment>
+</navigation>
