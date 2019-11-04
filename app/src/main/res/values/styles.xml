@@ -34,4 +34,9 @@
         <item name="android:textSize">22sp</item>
     </style>
 
+    <style name="AppTheme.TransparentTheme">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
 </resources>

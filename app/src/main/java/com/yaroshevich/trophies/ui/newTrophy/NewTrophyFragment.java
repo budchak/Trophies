@@ -4,8 +4,13 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,18 +26,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.palette.graphics.Palette;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Target;
 import com.yaroshevich.trophies.App;
 import com.yaroshevich.trophies.R;
 import com.yaroshevich.trophies.databinding.FragmentNewTrophyBinding;
 import com.yaroshevich.trophies.model.interfaces.model.Trophy;
+import com.yaroshevich.trophies.ui.MainActivity;
 import com.yaroshevich.trophies.ui.emptyDetail.EmptyDetailFragmentArgs;
 import com.yaroshevich.trophies.ui.newTrophy.interfaces.NewTrophyContract;
 import com.yaroshevich.trophies.util.ImageLoader;
 
-import java.io.File;
+import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -59,13 +67,14 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
 
 
     private Uri selectedImage;
-
+    Target target;
+    private int color;
+    private GradientDrawable gd;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
         App.getInstance()
                 .initNewTrophyComponent(this)
                 .inject(this);
@@ -73,7 +82,7 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
 
         EmptyDetailFragmentArgs args = getArguments() != null
                 ? EmptyDetailFragmentArgs.fromBundle(getArguments())
-                : null ;
+                : null;
 
         if (args != null) {
             id = args.getId();
@@ -93,7 +102,7 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
             ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         }
-        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbar3);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbar);
         presenter.loadTrophy(id);
         init(binding.getRoot());
 
@@ -102,6 +111,7 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
         inflater.inflate(R.menu.new_trophy_menu, menu);
     }
 
@@ -114,12 +124,16 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
             presenter.onClickEvent(NewTrophyCLickEvent.APPLY_CLICK);
+
             App.getInstance().destroyListComponent();
         }
         return true;
     }
 
     private void init(View view) {
+        binding.fishInfoCollapsingToolbar.setTitleEnabled(false);
+        color = ((MainActivity) getActivity()).getStatusBarColor();
+        ((MainActivity) getActivity()).setStatusBarColor(getResources().getColor(R.color.colorPrimaryTransparent));
         binding.trophyTitleImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,7 +170,7 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
     @Override
     public void getImage() {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-           requestPermissions( new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     REQUEST_PERMISSIONS_CODE_WRITE_STORAGE
             );
             Log.e("NewTrophy", "denied");
@@ -197,7 +211,7 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
 
     @Override
     public void update(Trophy trophy) {
-        binding.toolbar3.setTitle(trophy.getName());
+        binding.toolbar.setTitle(trophy.getName());
         binding.setTrophy(trophy);
         binding.invalidateAll();
     }
@@ -223,7 +237,15 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
 
     @Override
     public void setTitleImage(Uri titleImage) {
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), titleImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        createBackgroundColor(bitmap);
         imageLoader.loadImage(titleImage, binding.trophyTitleImage);
+
     }
 
     @Override
@@ -236,11 +258,46 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
     public void onResume() {
         super.onResume();
         //binding.newTrophyWeight.setText(trophy.getWeight());
-       // Toast.makeText(getContext(), "onResume", Toast.LENGTH_SHORT).show();
-       // presenter.loadTrophy(id);
+        // Toast.makeText(getContext(), "onResume", Toast.LENGTH_SHORT).show();
+        // presenter.loadTrophy(id);
     }
 
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((MainActivity) getActivity()).setStatusBarColor(color);
+    }
 
+    public void createBackgroundColor(Bitmap bitmap) {
+        int pix = bitmap.getPixel(0, bitmap.getHeight() - 1);
+        Log.e("pix", " " + pix);
+        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+            @Override
+            public void onGenerated(Palette palette) {
+                int defaultValue = 0x000000;
+                int vibrant = palette.getVibrantColor(defaultValue);
+                int vibrantLight = palette.getLightVibrantColor(defaultValue);
+                int vibrantDark = palette.getDarkVibrantColor(defaultValue);
+                int muted = palette.getMutedColor(defaultValue);
+                int mutedLight = palette.getLightMutedColor(defaultValue);
+                int mutedDark = palette.getDarkMutedColor(defaultValue);
+                int[] colors = {pix, getActivity().getResources().getColor(R.color.blueThemeToolbar)};
+                gd = new GradientDrawable(
+                        GradientDrawable.Orientation.TOP_BOTTOM, colors);
 
+                int[] colors2 = {Color.parseColor("#00000000")
+                        , Color.parseColor("#00000000")
+                        , pix};
+                GradientDrawable gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors2);
+                binding.coordinator.setBackground(gd);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    binding.trophyTitleImage.setForeground(gradientDrawable);
+                }
+                //binding.view.setBackground(gradientDrawable);
+
+            }
+        });
+
+    }
 }

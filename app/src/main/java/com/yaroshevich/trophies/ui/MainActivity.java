@@ -1,34 +1,22 @@
 package com.yaroshevich.trophies.ui;
 
-import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.core.content.ContextCompat;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.yaroshevich.trophies.R;
 import com.yaroshevich.trophies.navigation.AppNavigator;
 import com.yaroshevich.trophies.ui.base.BaseFragment;
-import com.yaroshevich.trophies.util.DPI;
 
-import java.security.PublicKey;
-
-public class MainActivity extends AppCompatActivity implements BaseFragment.ToolbarCreator   {
+public class MainActivity extends AppCompatActivity implements BaseFragment.ToolbarCreator {
 
     public static final int INRERNAL_STORAGE_REQUEST_CODE = 555;
 
@@ -53,14 +41,9 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
 
     @Override
     public void createToolbar(Toolbar toolbar) {
-       // setSupportActionBar(toolbar);
+        // setSupportActionBar(toolbar);
         Log.e("MAIN ACTIVITY", "toolbar creator");
     }
-
-
-
-
-
 
 
     @Override
@@ -75,6 +58,19 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
                 }
                 return;
         }
+    }
+
+
+    public void setStatusBarColor(int color) {
+        Window window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(color);
+    }
+
+    public int getStatusBarColor() {
+        Window window = getWindow();
+        return window.getStatusBarColor();
     }
 
 

@@ -37,7 +37,7 @@ public class ImageLoader {
     public void loadImage(Uri src, ImageView imageView) {
 
 
-        picasso.load(src).resize(200, 170).placeholder(R.drawable.progress_animation).into(imageView, new Callback() {
+        picasso.load(src).resize(imageView.getWidth(), imageView.getHeight()).placeholder(R.drawable.progress_animation).into(imageView, new Callback() {
             @Override
             public void onSuccess() {
 
