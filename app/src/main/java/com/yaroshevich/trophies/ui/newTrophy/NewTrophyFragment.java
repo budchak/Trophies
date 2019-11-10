@@ -27,6 +27,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.palette.graphics.Palette;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -162,8 +163,13 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
             }
         });
 
-        binding.newTrophyRv.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.HORIZONTAL, false));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL, true);
+        linearLayoutManager.setStackFromEnd(true);
+
+        binding.newTrophyRv.setLayoutManager(linearLayoutManager);
         binding.newTrophyRv.setAdapter(adapter);
+        DividerItemDecoration decoration = new DividerItemDecoration(binding.newTrophyRv.getContext(), RecyclerView.HORIZONTAL);
+        binding.newTrophyRv.addItemDecoration(decoration);
 
     }
 
@@ -211,6 +217,11 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
 
     @Override
     public void update(Trophy trophy) {
+        if (trophy.getPreviewSrc() != null) {
+
+            imageLoader.loadImage(trophy.getPreviewSrc(), binding.trophyTitleImage);
+
+        }
         binding.toolbar.setTitle(trophy.getName());
         binding.setTrophy(trophy);
         binding.invalidateAll();

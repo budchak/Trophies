@@ -1,4 +1,4 @@
-package com.yaroshevich.trophies.ui.riverTrophiew;
+    package com.yaroshevich.trophies.ui.riverTrophiew;
 
 import android.graphics.Rect;
 import android.view.MenuItem;

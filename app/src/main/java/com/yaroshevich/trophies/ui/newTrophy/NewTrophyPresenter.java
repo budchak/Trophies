@@ -29,6 +29,7 @@ public class NewTrophyPresenter implements NewTrophyContract.Presenter, NewTroph
     int id;
 
     private AppNavigator navigator;
+
     private Trophy trophyEntity;
 
     @Inject
@@ -110,7 +111,7 @@ public class NewTrophyPresenter implements NewTrophyContract.Presenter, NewTroph
 
     @Override
     public int getItemCount() {
-        return 5;
+        return trophy.getSrc().size();
     }
 
     @Override
@@ -126,6 +127,7 @@ public class NewTrophyPresenter implements NewTrophyContract.Presenter, NewTroph
     @Override
     public void onBindView(int id, BindItem bindItem) {
         item = bindItem;
+        bindItem.setPosition(id);
     }
 
     @Override
@@ -160,7 +162,14 @@ public class NewTrophyPresenter implements NewTrophyContract.Presenter, NewTroph
     @Override
     public void onItemCLick(BindItem item) {
         this.item = item;
-        view.getImage();
+        if (item.getItemType() == 0) {
+            trophy.setPreviewImage(trophy.getSrc().get(item.getCurrentPosition()));
+            view.update(trophy);
+            return;
+        } else {
+            view.getImage();
+        }
+
     }
 
     @Override
