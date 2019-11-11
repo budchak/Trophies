@@ -1,18 +1,14 @@
-    package com.yaroshevich.trophies.ui.riverTrophiew;
+package com.yaroshevich.trophies.ui.riverTrophiew;
 
 import android.graphics.Rect;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yaroshevich.trophies.App;
 import com.yaroshevich.trophies.R;
-import com.yaroshevich.trophies.Repository.PlaceRepository;
 import com.yaroshevich.trophies.Repository.PlaceTrophyRepository;
 import com.yaroshevich.trophies.ui.navigation.NavigationFragment;
 
@@ -37,13 +33,13 @@ public class RiverTrophiesFragment extends NavigationFragment {
 
                 if (params.getSpanIndex() % 2 == 0) {
 
-                    outRect.top = 20;
-                    outRect.right = 10;
-                    outRect.left = 20;
+                    outRect.top = 50;
+                    outRect.right = 25;
+                    outRect.left = 50;
                 } else {
-                    outRect.top = 20;
-                    outRect.right = 20;
-                    outRect.left = 10;
+                    outRect.top = 50;
+                    outRect.right = 50;
+                    outRect.left = 25;
                 }
             }
 

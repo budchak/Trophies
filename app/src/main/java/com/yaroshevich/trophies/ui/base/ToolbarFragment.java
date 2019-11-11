@@ -13,12 +13,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.yaroshevich.trophies.R;
 
-public abstract class ToolbarFragment extends BaseFragment{
+import java.util.zip.Inflater;
+
+public abstract class ToolbarFragment extends BaseFragment {
 
     protected Toolbar toolbar;
 
-
-    public int createToolbar(){
+    public int createToolbar() {
         return 0;
     }
 
@@ -37,23 +38,30 @@ public abstract class ToolbarFragment extends BaseFragment{
         FrameLayout toolbarContainer = fullView.findViewById(R.id.toolbar_container);
 
         this.view = fullView;
-        if (createToolbar() != 0){
-            getLayoutInflater().inflate(createToolbar(), toolbarContainer, true);
-            toolbar = view.findViewById(R.id.toolbar);
-            toolbar.setVisibility(View.VISIBLE);
-            ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        if (createToolbar() != 0) {
+            setToolbar(inflater, toolbarContainer, false);
         }
 
-        if (getLayout() != 0){
-            getLayoutInflater().inflate(getLayout(), activityContainer, true);
+        if (getLayout() != 0) {
+            setContent(activityContainer);
         }
 
         init();
         return fullView;
     }
 
+    private void setToolbar(LayoutInflater inflater, FrameLayout container, boolean attachToRoot) {
 
+        inflater.inflate(createToolbar(), container, attachToRoot);
+        toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setVisibility(View.VISIBLE);
 
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+    }
+
+    private void setContent(FrameLayout container){
+        getLayoutInflater().inflate(getLayout(), container, true);
+    }
 
 
     @Override

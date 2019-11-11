@@ -15,16 +15,16 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.yaroshevich.trophies.R;
 import com.yaroshevich.trophies.ui.newTrophy.interfaces.BindItem;
-import com.yaroshevich.trophies.ui.newTrophy.interfaces.NewTrophyRViewPresenter;
+import com.yaroshevich.trophies.ui.newTrophy.interfaces.RecyclerViewContract;
 
 
 public class NewTrophyAdapter extends RecyclerView.Adapter<NewTrophyAdapter.TrophyViewHolder> {
 
-    private NewTrophyRViewPresenter presenter;
+    private RecyclerViewContract.Presenter presenter;
     private Context context;
     private RecyclerView.Adapter adapter;
 
-    public NewTrophyAdapter(NewTrophyRViewPresenter presenter) {
+    public NewTrophyAdapter(RecyclerViewContract.Presenter presenter) {
         this.presenter = presenter;
         adapter = this;
     }

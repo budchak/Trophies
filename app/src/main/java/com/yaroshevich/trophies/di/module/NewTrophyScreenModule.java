@@ -7,8 +7,8 @@ import com.yaroshevich.trophies.Repository.TrophyRepository;
 import com.yaroshevich.trophies.di.spore.FragmentSpore;
 import com.yaroshevich.trophies.model.ObservableTrophy;
 import com.yaroshevich.trophies.ui.newTrophy.NewTrophyAdapter;
-import com.yaroshevich.trophies.ui.newTrophy.NewTrophyFragment;
 import com.yaroshevich.trophies.ui.newTrophy.NewTrophyPresenter;
+import com.yaroshevich.trophies.ui.newTrophy.NewTrophyFragment;
 import com.yaroshevich.trophies.util.ImageLoader;
 
 import dagger.Module;

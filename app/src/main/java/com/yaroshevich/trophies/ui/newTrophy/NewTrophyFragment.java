@@ -39,18 +39,19 @@ import com.yaroshevich.trophies.model.interfaces.model.Trophy;
 import com.yaroshevich.trophies.ui.MainActivity;
 import com.yaroshevich.trophies.ui.emptyDetail.EmptyDetailFragmentArgs;
 import com.yaroshevich.trophies.ui.newTrophy.interfaces.NewTrophyContract;
+import com.yaroshevich.trophies.ui.newTrophy.interfaces.RecyclerViewContract;
 import com.yaroshevich.trophies.util.ImageLoader;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.inject.Inject;
 
-public class NewTrophyFragment extends Fragment implements NewTrophyContract.View {
+public class NewTrophyFragment extends Fragment implements NewTrophyContract.View, RecyclerViewContract.View {
 
     public static final int RESULT_PREVIEW = 0;
     public static final int RESULT_RV = 1;
-
-    public static final String LOG_NEW_TROPHY = "NEW TROPHY";
+    
     private static final int REQUEST_PERMISSIONS_CODE_WRITE_STORAGE = 555;
 
     private FragmentNewTrophyBinding binding;
@@ -76,6 +77,7 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
         App.getInstance()
                 .initNewTrophyComponent(this)
                 .inject(this);
@@ -112,7 +114,6 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
         inflater.inflate(R.menu.new_trophy_menu, menu);
     }
 
@@ -247,14 +248,21 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
     }
 
     @Override
-    public void setTitleImage(Uri titleImage) {
+    public void setTitleImage(String titleImage) {
         Bitmap bitmap = null;
+        File file = new File(titleImage);
+        Uri myUri = null;
+        if (file.exists()){
+            myUri  = Uri.fromFile(file);
+        }
+
         try {
-            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), titleImage);
+            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), myUri);
+            createBackgroundColor(bitmap);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        createBackgroundColor(bitmap);
+
         imageLoader.loadImage(titleImage, binding.trophyTitleImage);
 
     }
@@ -309,6 +317,26 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
 
             }
         });
+
+    }
+
+    @Override
+    public void add(int pos) {
+
+    }
+
+    @Override
+    public void remove(int pos) {
+
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public void update() {
 
     }
 }

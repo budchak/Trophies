@@ -1,6 +1,5 @@
 package com.yaroshevich.trophies.ui.newTrophy;
 
-import android.media.Image;
 import android.net.Uri;
 import android.util.Log;
 
@@ -10,8 +9,7 @@ import com.yaroshevich.trophies.model.ObservableTrophy;
 import com.yaroshevich.trophies.model.interfaces.model.Trophy;
 import com.yaroshevich.trophies.navigation.AppNavigator;
 import com.yaroshevich.trophies.ui.newTrophy.interfaces.BindItem;
-import com.yaroshevich.trophies.ui.newTrophy.interfaces.NewTrophyContract;
-import com.yaroshevich.trophies.ui.newTrophy.interfaces.NewTrophyRViewPresenter;
+import com.yaroshevich.trophies.ui.newTrophy.interfaces.RecyclerViewContract;
 import com.yaroshevich.trophies.util.ImageLoader;
 
 import java.util.List;
@@ -20,10 +18,10 @@ import java.util.Observer;
 
 import javax.inject.Inject;
 
-public class NewTrophyPresenter implements NewTrophyContract.Presenter, NewTrophyRViewPresenter {
+public class NewTrophyPresenter implements com.yaroshevich.trophies.ui.newTrophy.interfaces.NewTrophyContract.Presenter, RecyclerViewContract.Presenter {
 
     @Inject
-    NewTrophyContract.View view;
+    com.yaroshevich.trophies.ui.newTrophy.interfaces.NewTrophyContract.View view;
 
     BindItem item;
     int id;
@@ -50,7 +48,7 @@ public class NewTrophyPresenter implements NewTrophyContract.Presenter, NewTroph
     };
 
     @Inject
-    public NewTrophyPresenter(NewTrophyContract.View view
+    public NewTrophyPresenter(com.yaroshevich.trophies.ui.newTrophy.interfaces.NewTrophyContract.View view
             , TrophyRepository repository
             , ImageLoader imageLoader
             , ObservableTrophy trophy) {
@@ -100,7 +98,7 @@ public class NewTrophyPresenter implements NewTrophyContract.Presenter, NewTroph
     }
 
     @Override
-    public void attach(NewTrophyContract.View view) {
+    public void attach(com.yaroshevich.trophies.ui.newTrophy.interfaces.NewTrophyContract.View view) {
         this.view = view;
     }
 
@@ -112,11 +110,6 @@ public class NewTrophyPresenter implements NewTrophyContract.Presenter, NewTroph
     @Override
     public int getItemCount() {
         return trophy.getSrc().size();
-    }
-
-    @Override
-    public void saveImage(Image image) {
-
     }
 
     @Override
@@ -138,8 +131,9 @@ public class NewTrophyPresenter implements NewTrophyContract.Presenter, NewTroph
 
     @Override
     public void onTitleImageTake(Uri uri) {
-        view.setTitleImage(uri);
         trophy.setPreviewImage(App.getComponent().getImageLoader().getStringFromUri(App.getComponent().getContext(), uri));
+        view.setTitleImage(trophy.getPreviewSrc());
+
     }
 
     @Override
@@ -164,7 +158,7 @@ public class NewTrophyPresenter implements NewTrophyContract.Presenter, NewTroph
         this.item = item;
         if (item.getItemType() == 0) {
             trophy.setPreviewImage(trophy.getSrc().get(item.getCurrentPosition()));
-            view.update(trophy);
+            view.setTitleImage(trophy.getPreviewSrc());
             return;
         } else {
             view.getImage();

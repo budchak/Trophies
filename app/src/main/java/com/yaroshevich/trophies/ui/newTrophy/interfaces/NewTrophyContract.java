@@ -14,7 +14,7 @@ public interface NewTrophyContract {
 
         void showMessage(String message);
 
-        void setTitleImage(Uri titleImage);
+        void setTitleImage(String src);
 
         void getTitleImage();
 
