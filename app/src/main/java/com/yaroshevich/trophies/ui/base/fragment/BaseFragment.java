@@ -13,11 +13,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.yaroshevich.trophies.ui.ActionBarModule;
+
 public abstract class BaseFragment extends Fragment {
 
     private String TAG = "BaseFragment";
     protected View view;
-
+    private ActionBarModule module;
 
     public String getTAG(){
         return TAG;
@@ -30,6 +32,10 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        if (context instanceof ActionBarModule){
+            module = (ActionBarModule)context;
+        }
+
         Log.i(TAG, "onAttach");
     }
 
@@ -94,4 +100,9 @@ public abstract class BaseFragment extends Fragment {
         Log.i(TAG, "onDetach");
         super.onDetach();
     }
+
+    void setToolbar(Toolbar toolbar){
+        module.set(toolbar);
+    }
+
 }

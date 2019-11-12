@@ -12,6 +12,7 @@ import com.yaroshevich.trophies.ui.emptyDetail.EmptyDetailFragmentDirections;
 import com.yaroshevich.trophies.ui.newTrophy.NewTrophyFragmentDirections;
 import com.yaroshevich.trophies.ui.preview.PreviewFragmentDirections;
 import com.yaroshevich.trophies.ui.riverTrophiew.RiverTrophiesFragmentDirections;
+import com.yaroshevich.trophies.ui.riverTrophiew.RiverTrophyFragmentWithNavigationDirections;
 
 public class AppNavigator {
 
@@ -57,17 +58,19 @@ public class AppNavigator {
     }
 
     public void navigateToPreviewScreen(int id) {
-
-        if (controller.getCurrentDestination().getId() == R.id.newTrophyFragment) {
+       int did =  controller.getCurrentDestination().getId();
+        if (did == R.id.newTrophyFragment) {
             NewTrophyFragmentDirections.ActionNewTrophyFragmentToPreviewFragment action = NewTrophyFragmentDirections.actionNewTrophyFragmentToPreviewFragment();
             action.setId(id);
             controller.navigate(action);
-        } else {
+        } if (did == R.id.riverTrophyFragmentWithNavigation) {
 
-            RiverTrophiesFragmentDirections.ActionTrophy action = RiverTrophiesFragmentDirections.actionTrophy();
+            RiverTrophyFragmentWithNavigationDirections
+                    .ActionRiverTrophyFragmentWithNavigationToPreviewFragmentWithToolbar action = RiverTrophyFragmentWithNavigationDirections.actionRiverTrophyFragmentWithNavigationToPreviewFragmentWithToolbar(0);
             action.setId(id);
             controller.navigate(action);
         }
+
     }
 
     public void navigateToEmptyDetailScreen(int id) {

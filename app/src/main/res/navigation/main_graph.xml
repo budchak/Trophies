@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/riverTrophiesFragment">
+    app:startDestination="@id/riverTrophyFragmentWithNavigation">
     <fragment
         android:id="@+id/previewFragment"
         android:name="com.yaroshevich.trophies.ui.preview.PreviewFragment"
@@ -113,9 +113,31 @@
                 android:name="id"
                 android:defaultValue="0" />
         </action>
+        <action
+            android:id="@+id/action_preview"
+            app:destination="@id/previewFragmentWithToolbar" >
+            <argument android:defaultValue="0"
+                android:name="id" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/riverListWithToolbarFragment"
         android:name="com.yaroshevich.trophies.ui.riverList.RiverListWithToolbarFragment"
         android:label="RiverListWithToolbarFragment" />
+    <fragment
+        android:id="@+id/riverTrophyFragmentWithNavigation"
+        android:name="com.yaroshevich.trophies.ui.riverTrophiew.RiverTrophyFragmentWithNavigation"
+        android:label="RiverTrophyFragmentWithNavigation" >
+        <action
+            android:id="@+id/action_riverTrophyFragmentWithNavigation_to_previewFragmentWithToolbar"
+            app:destination="@id/previewFragmentWithToolbar" />
+    </fragment>
+    <fragment
+        android:id="@+id/previewFragmentWithToolbar"
+        android:name="com.yaroshevich.trophies.ui.preview.PreviewFragmentWithToolbar"
+        android:label="PreviewFragmentWithToolbar" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
 </navigation>

@@ -3,7 +3,9 @@ package com.yaroshevich.trophies.ui.preview;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +18,7 @@ import com.yaroshevich.trophies.model.interfaces.model.Preview;
 import com.yaroshevich.trophies.ui.base.fragment.BaseFragment;
 import com.yaroshevich.trophies.ui.emptyDetail.EmptyDetailFragmentArgs;
 import com.yaroshevich.trophies.ui.preview.interfaces.PreviewContract;
+import com.yaroshevich.trophies.ui.riverTrophiew.decorator.BorderDecorator;
 import com.yaroshevich.trophies.util.ScreenSizeManager;
 
 import java.util.List;
@@ -34,20 +37,26 @@ public class PreviewFragment extends BaseFragment implements PreviewContract.Vie
 
     int id;
 
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EmptyDetailFragmentArgs args = getArguments() != null
-                ? EmptyDetailFragmentArgs.fromBundle(getArguments())
-                : null;
-
-        if (args != null) {
-            id = args.getId();
-        }
-
+    public PreviewFragment() {
     }
 
+    public PreviewFragment(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public void setTAG(String tag) {
+        super.setTAG("Preview Fragment");
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        view = inflater.inflate(R.layout.fragment_preview, container, false);
+        init();
+        return view;
+    }
 
     public int getLayout() {
         return R.layout.fragment_preview;
@@ -70,24 +79,7 @@ public class PreviewFragment extends BaseFragment implements PreviewContract.Vie
         } else row = 2;
 
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), row));
-        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                GridLayoutManager.LayoutParams params = (GridLayoutManager.LayoutParams) view.getLayoutParams();
-
-                if (params.getSpanIndex() % 2 == 0) {
-
-                    outRect.top = 20;
-                    outRect.right = 10;
-                    outRect.left = 20;
-                } else {
-                    outRect.top = 20;
-                    outRect.right = 20;
-                    outRect.left = 10;
-                }
-            }
-
-        });
+        recyclerView.addItemDecoration(new BorderDecorator());
 
     }
 

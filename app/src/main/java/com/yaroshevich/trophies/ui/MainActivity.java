@@ -17,7 +17,6 @@ import com.yaroshevich.trophies.navigation.AppNavigator;
 
 public class MainActivity extends AppCompatActivity implements ActionBarModule {
 
-    public static final int INRERNAL_STORAGE_REQUEST_CODE = 555;
 
     public static final String MAIN_ACTIVITY_TAG = "MAIN ACTIVITY";
 
@@ -39,21 +38,6 @@ public class MainActivity extends AppCompatActivity implements ActionBarModule {
         Log.e(MAIN_ACTIVITY_TAG, "on resume");
         navigator = AppNavigator.getInstance(this);
 
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case INRERNAL_STORAGE_REQUEST_CODE:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                } else {
-                    // permission denied
-                }
-                return;
-        }
     }
 
 

@@ -13,6 +13,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.navigation.NavigationView;
 import com.yaroshevich.trophies.R;
@@ -23,7 +25,12 @@ public abstract class NavigationFragment extends BaseFragment implements Navigat
 
     Toolbar toolbar;
 
-    public abstract int getLayout();
+    private FragmentManager fragmentManager;
+
+    protected abstract Fragment getFragment();
+
+
+
 
     protected  int getHeader(){
         return 0;
@@ -34,19 +41,22 @@ public abstract class NavigationFragment extends BaseFragment implements Navigat
     }
 
 
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View fullView = inflater.inflate(R.layout.fragment_navigation, null);
+        super.onCreateView(inflater, container, savedInstanceState);
 
-        FrameLayout activityContainer = fullView.findViewById(R.id.navigation_context);
-        getLayoutInflater().inflate(getLayout(), activityContainer, true);
-        //super.onCreateView(inflater, container, savedInstanceState);
+        View fullView = inflater.inflate(R.layout.fragment_navigation, container, false);
+
+        fragmentManager = getChildFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.navigation_context, getFragment())
+                .commit();
+
         this.view = fullView;
+
         toolbar = view.findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        setToolbar(toolbar);
 
         DrawerLayout drawer = fullView.findViewById(R.id.drawer_layout);
         NavigationView navigationView = fullView.findViewById(R.id.nav_view);
@@ -64,15 +74,9 @@ public abstract class NavigationFragment extends BaseFragment implements Navigat
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        init();
+
         return fullView;
     }
 
-    protected abstract void init();
 
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        return false;
-    }
 }
