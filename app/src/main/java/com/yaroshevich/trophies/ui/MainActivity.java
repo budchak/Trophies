@@ -6,21 +6,21 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 
+import com.yaroshevich.trophies.App;
 import com.yaroshevich.trophies.R;
 import com.yaroshevich.trophies.navigation.AppNavigator;
-import com.yaroshevich.trophies.ui.base.BaseFragment;
 
-public class MainActivity extends AppCompatActivity implements BaseFragment.ToolbarCreator {
+public class MainActivity extends AppCompatActivity implements ActionBarModule {
 
     public static final int INRERNAL_STORAGE_REQUEST_CODE = 555;
 
     public static final String MAIN_ACTIVITY_TAG = "MAIN ACTIVITY";
+
 
     AppNavigator navigator;
 
@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
         Log.e(MAIN_ACTIVITY_TAG, "on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        App.getInstance().initMainActivityComponent(this).inject(this);
     }
 
     @Override
@@ -37,12 +39,6 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
         Log.e(MAIN_ACTIVITY_TAG, "on resume");
         navigator = AppNavigator.getInstance(this);
 
-    }
-
-    @Override
-    public void createToolbar(Toolbar toolbar) {
-        // setSupportActionBar(toolbar);
-        Log.e("MAIN ACTIVITY", "toolbar creator");
     }
 
 
@@ -73,6 +69,15 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
         return window.getStatusBarColor();
     }
 
+    @Override
+    public ActionBar get() {
+        return getSupportActionBar();
+    }
+
+    @Override
+    public void set(Toolbar toolbar) {
+        setSupportActionBar(toolbar);
+    }
 
 
 }

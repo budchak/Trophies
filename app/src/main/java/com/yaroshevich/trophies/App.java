@@ -1,15 +1,18 @@
 package com.yaroshevich.trophies;
 
+import android.app.Activity;
 import android.app.Application;
 
 import com.yaroshevich.trophies.di.component.AppComponent;
 import com.yaroshevich.trophies.di.component.DaggerAppComponent;
+import com.yaroshevich.trophies.di.component.MainActivityComponent;
 import com.yaroshevich.trophies.di.component.NewTrophyScreenComponent;
 import com.yaroshevich.trophies.di.component.PreviewComponent;
 import com.yaroshevich.trophies.di.module.AppModule;
+import com.yaroshevich.trophies.di.module.MainActivityModule;
 import com.yaroshevich.trophies.di.module.NewTrophyScreenModule;
 import com.yaroshevich.trophies.di.module.PreviewModule;
-import com.yaroshevich.trophies.model.interfaces.model.Preview;
+import com.yaroshevich.trophies.ui.MainActivity;
 import com.yaroshevich.trophies.ui.newTrophy.NewTrophyFragment;
 import com.yaroshevich.trophies.ui.preview.PreviewFragment;
 
@@ -20,6 +23,7 @@ public class App extends Application {
     private static AppComponent component;
     private static NewTrophyScreenComponent newTrophyScreenComponent;
     private static PreviewComponent previewComponent;
+    private static MainActivityComponent mainActivityComponent;
 
     @Override
     public void onCreate() {
@@ -38,7 +42,7 @@ public class App extends Application {
 
     public NewTrophyScreenComponent initNewTrophyComponent(NewTrophyFragment fragment) {
         if (newTrophyScreenComponent == null) {
-            newTrophyScreenComponent = component.listComponent(new NewTrophyScreenModule(fragment));
+            newTrophyScreenComponent = component.plusNewTrophyComponent(new NewTrophyScreenModule(fragment));
         }
         return newTrophyScreenComponent;
     }
@@ -50,6 +54,17 @@ public class App extends Application {
         return previewComponent;
     }
 
+    public PreviewComponent getPreviewComponent(){
+        return previewComponent;
+    }
+
+    public MainActivityComponent initMainActivityComponent(MainActivity activity){
+        if (mainActivityComponent == null){
+            mainActivityComponent = component.plusMainActivityComponent(new MainActivityModule(activity));
+        }
+        return mainActivityComponent;
+    }
+
     public static AppComponent getComponent() {
         return component;
     }
@@ -59,9 +74,9 @@ public class App extends Application {
         return newTrophyScreenComponent;
     }
 
-    public PreviewComponent getPreviewComponent(){
-        return previewComponent;
-    }
+
+
+
 
     public void destroyListComponent() {
         newTrophyScreenComponent = null;

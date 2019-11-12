@@ -1,4 +1,4 @@
-package com.yaroshevich.trophies.ui.navigation;
+package com.yaroshevich.trophies.ui.base.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,19 +12,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.yaroshevich.trophies.R;
-import com.yaroshevich.trophies.ui.base.BaseFragment;
+import com.yaroshevich.trophies.ui.base.fragment.BaseFragment;
 
 
 public abstract class NavigationFragment extends BaseFragment implements NavigationView.OnNavigationItemSelectedListener {
 
     Toolbar toolbar;
 
-    @Override
     public abstract int getLayout();
 
     protected  int getHeader(){
@@ -70,11 +68,11 @@ public abstract class NavigationFragment extends BaseFragment implements Navigat
         return fullView;
     }
 
+    protected abstract void init();
+
 
     @Override
-    public void setToolbar() {
-        //super.setToolbar();
-
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        return false;
     }
-
 }

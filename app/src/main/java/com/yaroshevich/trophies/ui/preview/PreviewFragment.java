@@ -1,7 +1,6 @@
 package com.yaroshevich.trophies.ui.preview;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yaroshevich.trophies.App;
 import com.yaroshevich.trophies.R;
 import com.yaroshevich.trophies.model.interfaces.model.Preview;
-import com.yaroshevich.trophies.ui.base.BaseFragment;
+import com.yaroshevich.trophies.ui.base.fragment.BaseFragment;
 import com.yaroshevich.trophies.ui.emptyDetail.EmptyDetailFragmentArgs;
 import com.yaroshevich.trophies.ui.preview.interfaces.PreviewContract;
 import com.yaroshevich.trophies.util.ScreenSizeManager;
@@ -26,7 +25,6 @@ import javax.inject.Inject;
 public class PreviewFragment extends BaseFragment implements PreviewContract.View {
 
     private RecyclerView recyclerView;
-    private ToolbarCreator toolbarCreator;
 
     @Inject
     public PreviewAdapter adapter;
@@ -50,12 +48,12 @@ public class PreviewFragment extends BaseFragment implements PreviewContract.Vie
 
     }
 
-    @Override
+
     public int getLayout() {
         return R.layout.fragment_preview;
     }
 
-    @Override
+
     public void init() {
 
         App.getInstance().initPreviewComponent(this).inject(this);
@@ -101,7 +99,6 @@ public class PreviewFragment extends BaseFragment implements PreviewContract.Vie
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        toolbarCreator = (ToolbarCreator) context;
     }
 
 

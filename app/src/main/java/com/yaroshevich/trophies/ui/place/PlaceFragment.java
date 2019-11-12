@@ -4,7 +4,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.yaroshevich.trophies.R;
-import com.yaroshevich.trophies.ui.base.BaseFragment;
+import com.yaroshevich.trophies.ui.base.fragment.BaseFragment;
 
 public class PlaceFragment extends BaseFragment {
 
@@ -14,12 +14,12 @@ public class PlaceFragment extends BaseFragment {
 
     private TabLayout tabLayout;
 
-    @Override
+
     public int getLayout() {
         return R.layout.fragment_place;
     }
 
-    @Override
+
     public void init() {
 
         tabAdapter = new PlaceTabAdapter(getActivity().getSupportFragmentManager(), 1);

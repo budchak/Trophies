@@ -114,4 +114,8 @@
                 android:defaultValue="0" />
         </action>
     </fragment>
+    <fragment
+        android:id="@+id/riverListWithToolbarFragment"
+        android:name="com.yaroshevich.trophies.ui.riverList.RiverListWithToolbarFragment"
+        android:label="RiverListWithToolbarFragment" />
 </navigation>

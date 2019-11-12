@@ -8,10 +8,12 @@ import com.yaroshevich.trophies.Repository.FishRepository;
 import com.yaroshevich.trophies.Repository.PreviewRepository;
 import com.yaroshevich.trophies.Repository.TrophyRepository;
 import com.yaroshevich.trophies.di.module.AppModule;
+import com.yaroshevich.trophies.di.module.MainActivityModule;
 import com.yaroshevich.trophies.di.module.NewTrophyScreenModule;
 import com.yaroshevich.trophies.di.module.PreviewModule;
 import com.yaroshevich.trophies.model.interfaces.model.Preview;
 import com.yaroshevich.trophies.room.FishInfoDatabase;
+import com.yaroshevich.trophies.ui.MainActivity;
 import com.yaroshevich.trophies.util.ImageLoader;
 import com.yaroshevich.trophies.util.ScreenSizeManager;
 
@@ -29,8 +31,10 @@ public interface AppComponent {
     FishRepository getFishRepository();
     PreviewRepository getPreviewRepository();
     ScreenSizeManager getScreeSizeManager();
-    NewTrophyScreenComponent listComponent(NewTrophyScreenModule listModule);
+    NewTrophyScreenComponent plusNewTrophyComponent(NewTrophyScreenModule listModule);
     PreviewComponent plusPreviewComponent(PreviewModule listModule);
+    MainActivityComponent plusMainActivityComponent(MainActivityModule mainActivity);
+
 
 
 }

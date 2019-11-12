@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
@@ -31,11 +32,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Target;
 import com.yaroshevich.trophies.App;
 import com.yaroshevich.trophies.R;
 import com.yaroshevich.trophies.databinding.FragmentNewTrophyBinding;
 import com.yaroshevich.trophies.model.interfaces.model.Trophy;
+import com.yaroshevich.trophies.ui.ActionBarModule;
 import com.yaroshevich.trophies.ui.MainActivity;
 import com.yaroshevich.trophies.ui.emptyDetail.EmptyDetailFragmentArgs;
 import com.yaroshevich.trophies.ui.newTrophy.interfaces.NewTrophyContract;
@@ -51,7 +52,7 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
 
     public static final int RESULT_PREVIEW = 0;
     public static final int RESULT_RV = 1;
-    
+
     private static final int REQUEST_PERMISSIONS_CODE_WRITE_STORAGE = 555;
 
     private FragmentNewTrophyBinding binding;
@@ -65,31 +66,36 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
     @Inject
     public ImageLoader imageLoader;
 
+
+
+    public ActionBar supportActionBar;
+
+    public ActionBarModule actionBarModule;
+
     private int id;
 
 
     private Uri selectedImage;
-    Target target;
     private int color;
     private GradientDrawable gd;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        actionBarModule = (ActionBarModule)context;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        App.getInstance()
-                .initNewTrophyComponent(this)
-                .inject(this);
+        App.getInstance().initNewTrophyComponent(this).inject(this);
 
-
-        EmptyDetailFragmentArgs args = getArguments() != null
-                ? EmptyDetailFragmentArgs.fromBundle(getArguments())
-                : null;
+        EmptyDetailFragmentArgs args = getArguments() != null ? EmptyDetailFragmentArgs.fromBundle(getArguments()) : null;
 
         if (args != null) {
             id = args.getId();
-
         }
 
         presenter.attach(this);
@@ -101,16 +107,19 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_new_trophy, container, false);
-        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
-        }
-        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbar);
         presenter.loadTrophy(id);
         init(binding.getRoot());
-
+        setToolbar();
         return binding.getRoot();
     }
+
+
+    private void setToolbar() {
+        actionBarModule.set(binding.toolbar);
+    }
+
+
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -135,36 +144,16 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
     private void init(View view) {
         binding.fishInfoCollapsingToolbar.setTitleEnabled(false);
         color = ((MainActivity) getActivity()).getStatusBarColor();
+
         ((MainActivity) getActivity()).setStatusBarColor(getResources().getColor(R.color.colorPrimaryTransparent));
-        binding.trophyTitleImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.onTitleViewClick();
-            }
-        });
 
-        binding.newTrophyWeightImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.onClickEvent(NewTrophyCLickEvent.WEIGHT_CLICK);
-            }
-        });
+        binding.newTrophyWeightImageView.setOnClickListener(v -> presenter.onClickEvent(NewTrophyCLickEvent.WEIGHT_CLICK));
 
-        binding.newTrophyPlaceImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.onClickEvent(NewTrophyCLickEvent.PLACE_CLICK);
-            }
-        });
+        binding.newTrophyPlaceImageView.setOnClickListener(v -> presenter.onClickEvent(NewTrophyCLickEvent.PLACE_CLICK));
 
-        binding.newTrophyDateImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.onClickEvent(NewTrophyCLickEvent.DATE_CLICK);
-            }
-        });
+        binding.newTrophyDateImageView.setOnClickListener(v -> presenter.onClickEvent(NewTrophyCLickEvent.DATE_CLICK));
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL, true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, true);
         linearLayoutManager.setStackFromEnd(true);
 
         binding.newTrophyRv.setLayoutManager(linearLayoutManager);
@@ -252,8 +241,8 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
         Bitmap bitmap = null;
         File file = new File(titleImage);
         Uri myUri = null;
-        if (file.exists()){
-            myUri  = Uri.fromFile(file);
+        if (file.exists()) {
+            myUri = Uri.fromFile(file);
         }
 
         try {
@@ -265,20 +254,6 @@ public class NewTrophyFragment extends Fragment implements NewTrophyContract.Vie
 
         imageLoader.loadImage(titleImage, binding.trophyTitleImage);
 
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        //binding.newTrophyWeight.setText(trophy.getWeight());
-        // Toast.makeText(getContext(), "onResume", Toast.LENGTH_SHORT).show();
-        // presenter.loadTrophy(id);
     }
 
 

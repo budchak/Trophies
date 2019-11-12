@@ -1,6 +1,7 @@
 package com.yaroshevich.trophies.di.component;
 
 
+import com.yaroshevich.trophies.di.module.MainActivityModule;
 import com.yaroshevich.trophies.di.module.NewTrophyScreenModule;
 import com.yaroshevich.trophies.di.spore.FragmentSpore;
 import com.yaroshevich.trophies.model.ObservableTrophy;

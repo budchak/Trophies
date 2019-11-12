@@ -51,6 +51,11 @@ public class AppNavigator {
         controller.navigate(action);
     }
 
+    public void navigateToRiverInfoScreen() {
+
+        controller.navigate(R.id.riverListWithToolbarFragment);
+    }
+
     public void navigateToPreviewScreen(int id) {
 
         if (controller.getCurrentDestination().getId() == R.id.newTrophyFragment) {
