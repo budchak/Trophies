@@ -16,6 +16,7 @@ import com.yaroshevich.trophies.App;
 import com.yaroshevich.trophies.R;
 import com.yaroshevich.trophies.model.interfaces.model.Preview;
 import com.yaroshevich.trophies.ui.base.fragment.BaseFragment;
+import com.yaroshevich.trophies.ui.base.fragment.ToolbarFragment;
 import com.yaroshevich.trophies.ui.emptyDetail.EmptyDetailFragmentArgs;
 import com.yaroshevich.trophies.ui.preview.interfaces.PreviewContract;
 import com.yaroshevich.trophies.ui.riverTrophiew.decorator.BorderDecorator;

@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.yaroshevich.trophies.ui.base.fragment.ToolbarFragment;
-import com.yaroshevich.trophies.ui.emptyDetail.EmptyDetailFragmentArgs;
 
 public class PreviewFragmentWithToolbar extends ToolbarFragment {
 
@@ -29,8 +28,17 @@ public class PreviewFragmentWithToolbar extends ToolbarFragment {
         }
     }
 
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
     @Override
     protected Fragment getFragment() {
         return new PreviewFragment(id);
     }
+
+
 }

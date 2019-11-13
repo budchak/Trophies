@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements ActionBarModule {
 
     public static final String MAIN_ACTIVITY_TAG = "MAIN ACTIVITY";
 
-
+    private Toolbar toolbar;
     AppNavigator navigator;
 
     @Override
@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements ActionBarModule {
     }
 
     @Override
-    public ActionBar get() {
-        return getSupportActionBar();
+    public Toolbar get() {
+        return toolbar;
     }
 
     @Override
